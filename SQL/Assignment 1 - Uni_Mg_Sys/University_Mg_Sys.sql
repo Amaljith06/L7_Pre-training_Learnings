@@ -1,32 +1,40 @@
 CREATE DATABASE university;
 
 CREATE TABLE advisors (
-	adv_id INT PRIMARY KEY,
-    adv_name VARCHAR(20),
-    adv_email VARCHAR(40) UNIQUE,
-    specialization VARCHAR(40)
+	advisor_id INT PRIMARY KEY AUTO_INCREMENT,
+    advisor_name VARCHAR(60) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    specialization VARCHAR(60)
 );
 
 CREATE TABLE students (
-	st_id INT PRIMARY KEY,
-    st_name VARCHAR(20),
-    st_email VARCHAR(20) UNIQUE,
+	student_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(40) NOT NULL,
+    email VARCHAR(40) UNIQUE NOT NULL,
     birth_date DATE,
-    adv_id INT,
-    FOREIGN KEY(adv_id) REFERENCES advisors(adv_id) ON DELETE SET NULL
+    advisor_id INT,
+    CONSTRAINT fk_students_advisor_id
+		FOREIGN KEY(advisor_id) REFERENCES advisors(advisor_id) 
+        ON DELETE SET NULL
 );
 
 CREATE TABLE courses (
-	crs_code VARCHAR(10) PRIMARY KEY,
-    title VARCHAR(40),
-    crs_description TEXT,
-    instructor VARCHAR(20)
+	course_code VARCHAR(10) PRIMARY KEY,
+    title VARCHAR(100),
+    description TEXT,
+    instructor VARCHAR(60)
 );
 
 CREATE TABLE enrollments (
-	st_id INT,
-    crs_code VARCHAR(10),
-    PRIMARY KEY(st_id, crs_code),
-    FOREIGN KEY(st_id) REFERENCES students(st_id) ON DELETE CASCADE,
-    FOREIGN KEY(crs_code) REFERENCES courses(crs_code) ON DELETE CASCADE
+	student_id INT,
+    course_code VARCHAR(10),
+    enrollment_status VARCHAR(15) DEFAULT 'pending' CHECK (enrollment_status IN ('pending', 'active', 'completed', 'cancelled')),
+    enrollment_date DATE,
+    PRIMARY KEY(student_id, course_code),
+    CONSTRAINT fk_enrollments_student
+		FOREIGN KEY(student_id) REFERENCES students(student_id) 
+        ON DELETE CASCADE,
+    CONSTRAINT fk_enrollments_course 
+		FOREIGN KEY(course_code) REFERENCES courses(course_code) 
+        ON DELETE CASCADE
 );
