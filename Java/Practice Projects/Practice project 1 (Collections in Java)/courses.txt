@@ -1,0 +1,10 @@
+CS101,Introduction to Computer Science
+MATH201,Calculus I
+PHYS150,General Physics
+ENG102,English Composition
+HIST210,World History
+BIO110,Introduction to Biology
+CHEM120,General Chemistry
+CS102,Data Structures
+MATH202,Calculus II
+PSY101,Introduction to Psychology
