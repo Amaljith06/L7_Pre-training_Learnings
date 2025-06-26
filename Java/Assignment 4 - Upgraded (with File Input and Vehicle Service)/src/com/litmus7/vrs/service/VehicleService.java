@@ -22,7 +22,7 @@ public class VehicleService {
 	 * 
 	 * @param filepath
 	 */
-	public void loadVehiclesFromFile(String filepath) {
+	public List<Vehicle> loadVehiclesFromFile(String filepath) {
 		try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -42,16 +42,17 @@ public class VehicleService {
 		} catch (IOException e) {
 			System.out.println("Error reading vehicle file: " + e.getMessage());
 		}
-	}
-
-	/**
-	 * This method returns the list of available vehicles
-	 * 
-	 * @return vehicleCatalog the list of available vehicles
-	 */
-	public List<Vehicle> getVehicleCatalog() {
 		return vehicleCatalog;
 	}
+
+//	/**
+//	 * This method returns the list of available vehicles
+//	 * 
+//	 * @return vehicleCatalog the list of available vehicles
+//	 */
+//	public List<Vehicle> getVehicleCatalog() {
+//		return vehicleCatalog;
+//	}
 
 	/**
 	 * This method adds a new vehicle to the list of available vehicles
@@ -61,15 +62,5 @@ public class VehicleService {
 	public void addVehicle(Vehicle vehicle) {
 		vehicleCatalog.add(vehicle);
 
-	}
-
-	/**
-	 * This method displays the available vehicles
-	 */
-	public void displayVehicles() {
-		for (Vehicle vehicle : vehicleCatalog) {
-			vehicle.displayDetails();
-			System.out.println("------------");
-		}
 	}
 }
