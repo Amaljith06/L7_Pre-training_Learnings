@@ -1,7 +1,5 @@
 package com.litmus7.vrs.dto;
 
-import java.util.Scanner;
-
 /**
  * This class represents a generic vehicle available for rent
  */
@@ -33,26 +31,16 @@ public class Vehicle {
 		this.rentalPricePerDay = rentalPricePerDay;
 	}
 
-	/**
-	 * This method gets vehicle input details from user
-	 */
-	public void inputDetails() {
-		Scanner scan = new Scanner(System.in);
-
-		System.out.println("Enter brand: ");
-		brand = scan.nextLine();
-		System.out.println("Enter model: ");
-		model = scan.nextLine();
-		System.out.println("Enter rental price per day: ");
-		rentalPricePerDay = scan.nextDouble();
+	public String getBrand() {
+		return brand;
 	}
 
-	/**
-	 * This displays the vehicle details
-	 */
-	public void displayDetails() {
-		System.out.println("Brand: " + brand);
-		System.out.println("Model: " + model);
-		System.out.println("Rental Price/Day: " + rentalPricePerDay);
+	public String getModel() {
+		return model;
 	}
+
+	public double getRentalPricePerDay() {
+		return rentalPricePerDay;
+	}
+
 }

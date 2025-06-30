@@ -1,7 +1,5 @@
 package com.litmus7.vrs.dto;
 
-import java.util.Scanner;
-
 /**
  * This class represents a bike A subclass that inherits from the vehicle class
  */
@@ -33,27 +31,10 @@ public class Bike extends Vehicle {
 		this.engineCapacity = engineCapacity;
 	}
 
-	/**
-	 * This method gets bike input details from user
-	 */
-	public void inputDetails() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("\n---Enter Bike Details---\n");
-		super.inputDetails();
-
-		System.out.println("Is it geared? (True/False) : ");
-		hasGear = scan.nextBoolean();
-		System.out.println("Enter the engine capacity : ");
-		engineCapacity = scan.nextInt();
+	@Override
+	public String toString() {
+		return "Bike [getBrand()=" + getBrand() + ", getModel()=" + getModel() + ", getRentalPricePerDay()="
+				+ getRentalPricePerDay() + ", engineCapacity=" + engineCapacity + ", hasGear=" + hasGear + "]";
 	}
 
-	/**
-	 * This displays the bike details
-	 */
-	public void displayDetails() {
-		super.displayDetails();
-
-		System.out.println("Bike is " + (hasGear ? "geared" : "gearless"));
-		System.out.println("Engine capacity : " + engineCapacity + " cc");
-	}
 }

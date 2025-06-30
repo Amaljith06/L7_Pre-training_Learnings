@@ -1,66 +1,97 @@
 package com.litmus7.vrs.service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.litmus7.vrs.dto.Bike;
-import com.litmus7.vrs.dto.Car;
+import com.litmus7.vrs.dao.VehicleFileDao;
 import com.litmus7.vrs.dto.Vehicle;
+import com.litmus7.vrs.exception.VehicleDataAccessException;
+import com.litmus7.vrs.exception.VehicleServiceException;
 
 /**
  * This class represents a service layer
  */
 public class VehicleService {
 
-	private List<Vehicle> vehicleCatalog = new ArrayList<>();
+	private List<Vehicle> vehicles = new ArrayList<>();
+	private VehicleFileDao vehicleFileDao = new VehicleFileDao();
 
 	/**
-	 * This method read vehicle data from a text file and load them into a List
+	 * Load all vehicles from file
 	 * 
 	 * @param filepath
+	 * @return vehicles
 	 */
-	public List<Vehicle> loadVehiclesFromFile(String filepath) {
-		try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				String[] parts = line.split(",");
-				if (parts.length == 6) {
-					if (parts[0].equalsIgnoreCase("Car")) {
-						Car car = new Car(parts[1].trim(), parts[2].trim(), Double.parseDouble(parts[3].trim()),
-								Integer.parseInt(parts[4].trim()), Boolean.parseBoolean(parts[5].trim()));
-						vehicleCatalog.add(car);
-					} else if (parts[0].equalsIgnoreCase("Bike")) {
-						Bike bike = new Bike(parts[1].trim(), parts[2].trim(), Double.parseDouble(parts[3].trim()),
-								Boolean.parseBoolean(parts[4].trim()), Integer.parseInt(parts[5].trim()));
-						vehicleCatalog.add(bike);
-					}
-				}
-			}
-		} catch (IOException e) {
-			System.out.println("Error reading vehicle file: " + e.getMessage());
+	public List<Vehicle> loadVehicles(String filepath) throws VehicleServiceException {
+		try {
+			vehicles = vehicleFileDao.loadVehiclesFromFile(filepath);
+			return vehicles;
+		} catch (VehicleDataAccessException e) {
+			throw new VehicleServiceException("Failed to load vehicles from file: " + e.getMessage(), e);
+		} catch (Exception e) {
+			throw new VehicleServiceException("Unexpected error while loading vehicles: " + e.getMessage(), e);
 		}
-		return vehicleCatalog;
 	}
-
-//	/**
-//	 * This method returns the list of available vehicles
-//	 * 
-//	 * @return vehicleCatalog the list of available vehicles
-//	 */
-//	public List<Vehicle> getVehicleCatalog() {
-//		return vehicleCatalog;
-//	}
 
 	/**
 	 * This method adds a new vehicle to the list of available vehicles
 	 * 
 	 * @param vehicle the new vehicle to be added
 	 */
-	public void addVehicle(Vehicle vehicle) {
-		vehicleCatalog.add(vehicle);
+	public String addVehicle(Vehicle vehicle) throws VehicleServiceException {
+		try {
+			vehicles.add(vehicle);
+			return "Vehicle added successfully: " + vehicle.getBrand() + " " + vehicle.getModel();
+		} catch (Exception e) {
+			throw new VehicleServiceException("Failed to add vehicle: " + e.getMessage(), e);
+		}
+	}
 
+	/**
+	 * Get all available vehicles
+	 * 
+	 * @return vehicles
+	 */
+	public List<Vehicle> getAllVehicles() throws VehicleServiceException {
+		try {
+			return vehicles;
+		} catch (Exception e) {
+			throw new VehicleServiceException("Failed to retrieve vehicle list: " + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * Search for a vehicle by brand and model
+	 * 
+	 * @return vehicle
+	 */
+	public Vehicle searchVehicle(String brand, String model) throws VehicleServiceException {
+		try {
+			for (Vehicle v : vehicles) {
+				if (v.getBrand().equalsIgnoreCase(brand) && v.getModel().equalsIgnoreCase(model)) {
+					return v;
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			throw new VehicleServiceException("Search failed: " + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * Calculate the total rental price per day for all vehicles
+	 * 
+	 * @return total
+	 */
+	public double calculateTotalRentalPrice() throws VehicleServiceException {
+		try {
+			double total = 0;
+			for (Vehicle v : vehicles) {
+				total += v.getRentalPricePerDay();
+			}
+			return total;
+		} catch (Exception e) {
+			throw new VehicleServiceException("Failed to calculate total rental price: " + e.getMessage(), e);
+		}
 	}
 }
