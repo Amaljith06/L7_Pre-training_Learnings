@@ -32,6 +32,10 @@ public class VehicleController {
 			response.setStatusCode(ERROR_STATUS_CODE);
 			response.setErrorMessage("Could not load vehicle data" + e.getMessage());
 			response.setPayload(null);
+		} catch (Exception e) {
+			response.setStatusCode(ERROR_STATUS_CODE);
+			response.setErrorMessage("Unexpected error  while loading vehicles: " + e.getMessage());
+			response.setPayload(null);
 		}
 		return response;
 	}
@@ -68,10 +72,9 @@ public class VehicleController {
 			response.setPayload(vehicles);
 		} catch (VehicleServiceException e) {
 			response.setStatusCode(ERROR_STATUS_CODE);
-			response.setErrorMessage("Error retrieving vehicles: " + e.getMessage());
+			response.setErrorMessage("Error retrieving vehicles " + e.getMessage());
 			response.setPayload(null);
 		}
-
 		return response;
 	}
 
@@ -97,7 +100,7 @@ public class VehicleController {
 			}
 		} catch (VehicleServiceException e) {
 			response.setStatusCode(ERROR_STATUS_CODE);
-			response.setErrorMessage("Error occurred during search: " + e.getMessage());
+			response.setErrorMessage("Error occurred during search " + e.getMessage());
 			response.setPayload(null);
 		}
 
@@ -113,7 +116,7 @@ public class VehicleController {
 			response.setPayload(total);
 		} catch (VehicleServiceException e) {
 			response.setStatusCode(ERROR_STATUS_CODE);
-			response.setErrorMessage("Error calculating total rental price: " + e.getMessage());
+			response.setErrorMessage("Error calculating total rental price " + e.getMessage());
 			response.setPayload(0.0);
 		}
 

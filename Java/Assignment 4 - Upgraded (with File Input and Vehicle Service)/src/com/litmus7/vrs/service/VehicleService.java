@@ -27,9 +27,9 @@ public class VehicleService {
 			vehicles = vehicleFileDao.loadVehiclesFromFile(filepath);
 			return vehicles;
 		} catch (VehicleDataAccessException e) {
-			throw new VehicleServiceException("Failed to load vehicles from file: " + e.getMessage(), e);
+			throw new VehicleServiceException("\nFailed to load vehicles from file: " + e.getMessage(), e);
 		} catch (Exception e) {
-			throw new VehicleServiceException("Unexpected error while loading vehicles: " + e.getMessage(), e);
+			throw new VehicleServiceException("\nUnexpected error while loading vehicles: " + e.getMessage(), e);
 		}
 	}
 
@@ -39,12 +39,11 @@ public class VehicleService {
 	 * @param vehicle the new vehicle to be added
 	 */
 	public String addVehicle(Vehicle vehicle) throws VehicleServiceException {
-		try {
+		if (!vehicles.contains(vehicle)) {
 			vehicles.add(vehicle);
 			return "Vehicle added successfully: " + vehicle.getBrand() + " " + vehicle.getModel();
-		} catch (Exception e) {
-			throw new VehicleServiceException("Failed to add vehicle: " + e.getMessage(), e);
 		}
+		throw new VehicleServiceException("Vehicle already exists");
 	}
 
 	/**
@@ -56,7 +55,7 @@ public class VehicleService {
 		try {
 			return vehicles;
 		} catch (Exception e) {
-			throw new VehicleServiceException("Failed to retrieve vehicle list: " + e.getMessage(), e);
+			throw new VehicleServiceException("\nFailed to retrieve vehicle list: " + e.getMessage(), e);
 		}
 	}
 
@@ -74,7 +73,7 @@ public class VehicleService {
 			}
 			return null;
 		} catch (Exception e) {
-			throw new VehicleServiceException("Search failed: " + e.getMessage(), e);
+			throw new VehicleServiceException("\nSearch failed: " + e.getMessage(), e);
 		}
 	}
 
@@ -91,7 +90,7 @@ public class VehicleService {
 			}
 			return total;
 		} catch (Exception e) {
-			throw new VehicleServiceException("Failed to calculate total rental price: " + e.getMessage(), e);
+			throw new VehicleServiceException("/nFailed to calculate total rental price: " + e.getMessage(), e);
 		}
 	}
 }

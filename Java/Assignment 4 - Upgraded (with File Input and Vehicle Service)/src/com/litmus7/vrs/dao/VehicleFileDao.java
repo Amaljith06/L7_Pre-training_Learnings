@@ -27,14 +27,17 @@ public class VehicleFileDao {
 			while ((line = br.readLine()) != null) {
 				String[] parts = line.split(",");
 				if (parts.length == 6) {
-					if (parts[0].equalsIgnoreCase("Car")) {
+					switch (parts[0]) {
+					case "Car":
 						Car car = new Car(parts[1].trim(), parts[2].trim(), Double.parseDouble(parts[3].trim()),
 								Integer.parseInt(parts[4].trim()), Boolean.parseBoolean(parts[5].trim()));
 						vehicles.add(car);
-					} else if (parts[0].equalsIgnoreCase("Bike")) {
+						break;
+					case "Bike":
 						Bike bike = new Bike(parts[1].trim(), parts[2].trim(), Double.parseDouble(parts[3].trim()),
 								Boolean.parseBoolean(parts[4].trim()), Integer.parseInt(parts[5].trim()));
 						vehicles.add(bike);
+						break;
 					}
 				}
 			}
